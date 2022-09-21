@@ -13,17 +13,24 @@ public class Client {
     private static BufferedReader readerConsole;
 
     public static void main(String[] args) throws IOException {
-        clientSocket = new Socket(host, port);
-        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        out = new PrintWriter(clientSocket.getOutputStream(), true);
-        readerConsole = new BufferedReader(new InputStreamReader(System.in));
-        String respServer;
-        String userText = "Привет!";
-        while (userText != null) {
-            out.println(userText);
-            respServer = in.readLine();
-            System.out.println(respServer);
-            userText = readerConsole.readLine();
+        try {
+            clientSocket = new Socket(host, port);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            readerConsole = new BufferedReader(new InputStreamReader(System.in));
+            String respServer;
+            String userText = "Привет!";
+            while (userText != null) {
+                out.println(userText);
+                respServer = in.readLine();
+                System.out.println(respServer);
+                userText = readerConsole.readLine();
+            }
+        } finally {
+            System.out.println("Клиент закрыт!");
+            clientSocket.close();
+            out.close();
+            in.close();
         }
     }
 }
